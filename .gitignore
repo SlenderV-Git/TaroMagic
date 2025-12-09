@@ -1,0 +1,9 @@
+*.env
+__pycache__/
+test.py
+testing_*
+**.db
+.certs
+venv/
+certs/
+frontend/

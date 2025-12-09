@@ -1,0 +1,96 @@
+services:
+  backend-service:
+    build: ./src/.
+    container_name: backend-service
+    environment:
+      - ALEMBIC_CONFIG=/usr/backend_app/alembic.ini
+    volumes:
+      - ./:/usr/backend_app/.
+    working_dir: /usr/backend_app/.
+    ports:
+      - "127.0.0.1:8080:8080"
+    command: bash -c 'alembic upgrade head && python -m src'
+    networks:
+      - app-network
+    expose:
+      - 8080
+    depends_on:
+      - db-service
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/healthcheck"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+  
+  nginx: 
+      image: nginx:latest 
+      container_name: nginx 
+      ports: 
+        - "80:80" 
+        - "443:443" 
+      volumes: 
+        - ./nginx/:/etc/nginx/ 
+      restart: always
+      networks:
+      - app-network
+
+  db-service:
+    image: postgres:latest
+    container_name: db-service
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - app-network
+    ports:
+      - 127.0.0.1:5432:5432
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
+    volumes:
+      - ~/opt/redis_data:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    command: >
+      sh -c '
+        mkdir -p /usr/local/etc/redis &&
+        echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf &&
+        echo "requirepass $REDIS_PASSWORD" >> /usr/local/etc/redis/redis.conf &&
+        echo "appendonly yes" >> /usr/local/etc/redis/redis.conf &&
+        echo "appendfsync everysec" >> /usr/local/etc/redis/redis.conf &&
+        echo "user default on nopass ~* +@all" > /usr/local/etc/redis/users.acl &&
+        echo "user $REDIS_USER on >$REDIS_USER_PASSWORD ~* +@all" >> /usr/local/etc/redis/users.acl &&
+        redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl
+      '
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "$REDIS_PASSWORD", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    networks:
+      app-network:
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
