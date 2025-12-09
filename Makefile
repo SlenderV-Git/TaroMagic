@@ -15,10 +15,10 @@ up-all-echo:
 	docker compose --env-file $(ENV_PATH) up
 
 up-backend:
-	docker compose --env-file $(ENV_PATH) up $(BACKEND_SERVICE) $(DB_SERVICE) 
+	docker compose --env-file $(ENV_PATH) up $(BACKEND_SERVICE) $(DB_SERVICE) -d
 
 up-db:
-	docker compose --env-file $(ENV_PATH) up $(DB_SERVICE)
+	docker compose --env-file $(ENV_PATH) up $(DB_SERVICE) -d
 
 stop-all:
 	docker stop $(BACKEND_SERVICE) $(DB_SERVICE) 
