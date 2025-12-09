@@ -6,8 +6,7 @@ services:
       - ./:/usr/backend_app/.
     working_dir: /usr/backend_app/.
     ports:
-    #127.0.0.1:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     command: bash -c 'python -m src'
     networks:
       - app-network
