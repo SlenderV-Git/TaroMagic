@@ -11,7 +11,7 @@ def main() -> None:
 
     app = init_app(db_settings, doc_settings)
 
-    start_app(app, "127.0.0.1")
+    start_app(app)
 
 
 if __name__ == "__main__":
