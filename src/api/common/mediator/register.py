@@ -14,6 +14,11 @@ from typing import (
     overload,
 )
 
+from src.api.v1.handlers.command.user.create import UserCreateCommand
+from src.api.v1.handlers.command.user.select import UserSelectCommand
+from src.api.v1.handlers.command.user.update import UserUpdateCommand
+from src.common.dto.user import SelectUserQuery, UpdateUserQuery, User, UserSchema
+from src.common.interfaces.hasher import AbstractHasher
 from src.api.v1.handlers.command.base import QT, RT, Command, CommandProtocol
 from .proxy import AwaitableProxy, CommandType
 
@@ -21,6 +26,22 @@ from .proxy import AwaitableProxy, CommandType
 class CommandMediatorProtocol(Protocol):
     # there you should add an overload for your command
     # it need to auto registry your command and also typing in routes
+
+    @overload
+    def send(
+        self, query: UserSchema, *, hasher: AbstractHasher
+    ) -> AwaitableProxy[UserCreateCommand, User]:
+        ...
+
+    @overload
+    def send(self, query: SelectUserQuery) -> AwaitableProxy[UserSelectCommand, User]:
+        ...
+
+    @overload
+    def send(
+        self, query: UpdateUserQuery, *, hasher: AbstractHasher
+    ) -> AwaitableProxy[UserUpdateCommand, User]:
+        ...
 
     #@overload
     #def send(

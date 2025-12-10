@@ -47,6 +47,18 @@ class DatabaseSettings(BaseSettings):
             f"{self.DB}"
         )
 
+class JWTSettings:
+    private_key: Final[str] = (
+        get_root_dir_path() / ".certs" / "jwt_private.pem"
+    ).read_text()
+
+    public_key: Final[str] = (
+        get_root_dir_path() / ".certs" / "jwt_public.pem"
+    ).read_text()
+
+    algorithm: Final[str] = "RS256"
+    acces_token_expiration: Final[int] = 3000
+    reflesh_token_expiration: Final[int] = 9000
 
 class DocumentationSettings(BaseSettings):
     root_dir_path: DirectoryPath = get_root_dir_path()
@@ -60,6 +72,24 @@ class DocumentationSettings(BaseSettings):
     DESCRIPTION: str
     SUMMARY: str
 
+class RedisSettings(BaseSettings):
+    root_dir_path: DirectoryPath = get_root_dir_path()
+    model_config = SettingsConfigDict(
+        env_file=f"{root_dir_path}/.env",
+        env_file_encoding="utf-8",
+        env_prefix="REDIS_",
+        extra="ignore",
+    )
+
+    HOST: str
+    PORT: int
+    PASSWORD: str
+
+    @property
+    def get_url(self) -> str:
+        return f"redis://{self.HOST}:{self.PORT}"
+
+
 class S3Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file='.env',
@@ -70,6 +100,13 @@ class S3Settings(BaseSettings):
     URL: str
     ROOT_USER: str
     ROOT_PASSWORD: str
+
+def get_jwt_settings() -> JWTSettings:
+    return JWTSettings()
+
+
+def get_redis_settings() -> RedisSettings:
+    return RedisSettings()
 
 
 def get_s3_settings() -> S3Settings:

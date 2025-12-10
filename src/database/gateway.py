@@ -9,6 +9,10 @@ class DBGateway(BaseGateway):
         self.manager = manager
         super().__init__(manager)
 
+    
+    def user(self):
+        return self._init_repo(UserRepository)
+
     '''def account(self):
         return self._init_repo(AccountRepository)'''
 
