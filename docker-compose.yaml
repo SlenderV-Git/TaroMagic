@@ -21,6 +21,25 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+  minio:
+    image: minio/minio
+    command: server --console-address ":9001" /data/
+    container_name: minio
+    restart: unless-stopped
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "9001:9001"
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ~/opt/minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
   
   nginx: 
       image: nginx:latest 
