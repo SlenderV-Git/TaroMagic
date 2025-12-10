@@ -4,7 +4,7 @@ from aiobotocore.response import StreamingBody
 
 
 from .base.base import BaseRepository
-from src.database.models.photo import Photo
+from src.common.dto.photo import Photo
 from src.database.s3_client import MinioManager
 
 
@@ -36,11 +36,11 @@ class MinioPhotoRepository(BaseRepository):
             data = await stream.read()
         return data
         
-    async def get_by_id(self, photo_id: int | str) -> Awaitable[Photo]:
+    async def get_by_id(self, bucket : str, photo_id: int | str) -> Photo:
         async with self.manager as client:
             client : S3Client
             resp = await client.get_object(Key=photo_id,
-                              Bucket=self.bucket)
+                              Bucket=bucket)
             bytes_data = await self.__download_photo(resp.get("Body"))
             return Photo(photo_id=photo_id, bytes_data=bytes_data)
     
