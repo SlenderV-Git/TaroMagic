@@ -1,7 +1,7 @@
 from typing import Literal, Optional
 from fastapi import FastAPI
 
-from src.database.s3_client import MinioManager
+from src.database.repositories.minio_repository import MinioPhotoRepository
 from src.services.gateway import ServicesGateway
 from src.api.common.mediator.mediator import CommandMediator
 from src.services.factory import create_service_gateway_factory
@@ -31,7 +31,7 @@ def init_dependencies(
     db_factory = create_database_factory(TransactionManager, session)
     service_factory = create_service_gateway_factory(db_factory)
 
-    minio_manager = MinioManager()
+    minio_repo= MinioPhotoRepository()
 
 
     mediator = CommandMediator()
@@ -40,11 +40,11 @@ def init_dependencies(
         session=session,
         db_gateway=db_factory,
         service_gateway=service_factory,
-        minio_manager = minio_manager
+        minio_manager = minio_repo
         
     )
 
-    app.dependency_overrides[MinioManager] = singleton(minio_manager)
+    app.dependency_overrides[MinioPhotoRepository] = singleton(minio_repo)
     app.dependency_overrides[CommandMediator] = singleton(mediator)
     app.dependency_overrides[ServicesGateway] = service_factory
     app.dependency_overrides[DBGateway] = db_factory

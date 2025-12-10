@@ -1,4 +1,5 @@
 *.env
+data/
 __pycache__/
 test.py
 testing_*

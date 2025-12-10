@@ -67,11 +67,10 @@ class S3Settings(BaseSettings):
         env_prefix= "MINIO_",
         extra="ignore"
     )
-    BUCKET: str
     URL: str
     ROOT_USER: str
     ROOT_PASSWORD: str
-    
+
 
 def get_s3_settings() -> S3Settings:
     return S3Settings()
