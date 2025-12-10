@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from src.common.dto.base import DTO
 
-class Photo(BaseModel):
+class Photo(DTO):
     photo_id : str
     bytes_data : bytes
 
