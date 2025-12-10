@@ -60,10 +60,24 @@ class DocumentationSettings(BaseSettings):
     DESCRIPTION: str
     SUMMARY: str
 
+class S3Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file='.env',
+        env_file_encoding='utf-8',
+        env_prefix= "MINIO_",
+        extra="ignore"
+    )
+    BUCKET: str
+    URL: str
+    ROOT_USER: str
+    ROOT_PASSWORD: str
+    
+
+def get_s3_settings() -> S3Settings:
+    return S3Settings()
 
 def get_db_settings() -> DatabaseSettings:
     return DatabaseSettings()
-
 
 def get_documentation_settings() -> DocumentationSettings:
     return DocumentationSettings()
