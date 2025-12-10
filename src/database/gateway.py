@@ -1,4 +1,5 @@
 from typing import Type
+from src.database.repositories.user import UserRepository
 from src.common.interfaces.gateway import BaseGateway
 from src.common.types import RepositoryType
 from src.database.core.manager import TransactionManager
