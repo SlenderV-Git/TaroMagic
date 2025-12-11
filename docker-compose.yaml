@@ -105,7 +105,7 @@ services:
     tty: true
     stdin_open: true
     networks:
-      app-network
+      - app-network
     
   cloudflared:
     image: cloudflare/cloudflared:latest
