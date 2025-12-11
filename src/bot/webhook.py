@@ -9,7 +9,7 @@ from src.bot.handlers import get_root_dispather
 
 
 update_router = APIRouter(tags=["webhook"])
-
+logger = logging.getLogger(__name__)
 
 @update_router.post("/webhook")
 async def handle_update(
@@ -17,7 +17,7 @@ async def handle_update(
     bot : Annotated[Bot, Depends(Stub(Bot))],
     dp : Annotated[Dispatcher, Depends(get_root_dispather)]
     ):
-    logging.critical(print(request))
+    logger.critical(str(request))
     update = Update.model_validate(
         await request.json(),
         context={"bot":bot}
