@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated, Any
 from fastapi import APIRouter, Depends
 from aiogram.types import Update
@@ -16,6 +17,7 @@ async def handle_update(
     bot : Annotated[Bot, Depends(Stub(Bot))],
     dp : Annotated[Dispatcher, Depends(get_root_dispather)]
     ):
+    logging.critical(print(request))
     update = Update.model_validate(
         await request.json(),
         context={"bot":bot}
