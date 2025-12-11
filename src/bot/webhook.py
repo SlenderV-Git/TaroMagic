@@ -9,7 +9,7 @@ from src.bot.handlers import get_root_dispather
 update_router = APIRouter(tags=["webhook"])
 
 
-@update_router.post("/")
+@update_router.post("/webhook")
 async def handle_update(
     update : Update, 
     bot : Annotated[Bot, Depends(Bot())],
