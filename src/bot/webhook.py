@@ -1,5 +1,5 @@
 from typing import Annotated, Any
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from aiogram.types import Update
 from aiogram import Bot, Dispatcher
 
@@ -12,8 +12,13 @@ update_router = APIRouter(tags=["webhook"])
 
 @update_router.post("/webhook")
 async def handle_update(
-    update : Update,
-    #bot : Annotated[Bot, Stub(Bot)]
+    request : Request,
+    bot : Annotated[Bot, Depends(Stub(Bot))],
+    dp : Annotated[Dispatcher, Depends(get_root_dispather)]
     ):
-    #await bot.feed_update(bot, update)
+    update = Update.model_validate(
+        await request.json(),
+        context={"bot":bot}
+    )
+    await dp.feed_update(bot, update)
     return {"ok": True}
