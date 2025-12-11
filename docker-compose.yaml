@@ -2,12 +2,14 @@ services:
   backend-service:
     build: ./src/.
     container_name: backend-service
+    environment:
+      - ALEMBIC_CONFIG=/usr/backend_app/alembic.ini
     volumes:
       - ./:/usr/backend_app/.
     working_dir: /usr/backend_app/.
     ports:
       - "127.0.0.1:8080:8080"
-    command: bash -c 'python -m src'
+    command: bash -c 'alembic upgrade head && python -m src'
     networks:
       - app-network
     expose:
