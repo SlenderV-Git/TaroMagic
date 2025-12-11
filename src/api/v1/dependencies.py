@@ -1,4 +1,5 @@
 from typing import Literal, Optional
+from aiogram import Dispatcher, Bot
 from fastapi import FastAPI
 from fakeredis.aioredis import FakeRedis
 
@@ -15,7 +16,7 @@ from src.database.core import (
     TransactionManager,
 )
 from src.database.gateway import DBGateway
-from src.core.settings import DatabaseSettings, JWTSettings, RedisSettings
+from src.core.settings import DatabaseSettings, JWTSettings, RedisSettings, BotSettings
 from src.database.factory import create_database_factory
 from src.common.tools import singleton
 
@@ -28,6 +29,7 @@ def init_dependencies(
     db_settings: DatabaseSettings,
     jwt_settings: JWTSettings,
     redis_settings: RedisSettings,
+    bot_settings : BotSettings,
     app_status: Optional[APP_STATUS] = "production",
 ) -> None:
     engine = create_engine(
@@ -47,6 +49,7 @@ def init_dependencies(
         else RedisClient(FakeRedis())
     )
 
+    bot = Bot(bot_settings.TOKEN)
 
     mediator = CommandMediator()
     mediator.setup(
@@ -61,6 +64,7 @@ def init_dependencies(
         
     )
 
+    app.dependency_overrides[Bot] = singleton(bot)
     app.dependency_overrides[MinioPhotoRepository] = singleton(minio_repo)
     app.dependency_overrides[CommandMediator] = singleton(mediator)
     app.dependency_overrides[ServicesGateway] = service_factory

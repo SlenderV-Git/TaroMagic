@@ -10,6 +10,18 @@ def get_root_dir_path() -> Path:
     return Path(__file__).resolve().parent.parent.parent
 
 
+class BotSettings(BaseSettings):
+    root_dir_path: DirectoryPath = get_root_dir_path()
+    model_config = SettingsConfigDict(
+        env_file=f"{root_dir_path}/.env",
+        env_file_encoding="utf-8",
+        env_prefix="BOT_",
+        extra="ignore",
+    )
+    TOKEN : str
+    WEBHOOK : str
+
+
 class DatabaseSettings(BaseSettings):
     root_dir_path: DirectoryPath = get_root_dir_path()
     model_config = SettingsConfigDict(
@@ -100,6 +112,10 @@ class S3Settings(BaseSettings):
     URL: str
     ROOT_USER: str
     ROOT_PASSWORD: str
+
+
+def get_bot_settings() -> BotSettings:
+    return BotSettings()
 
 def get_jwt_settings() -> JWTSettings:
     return JWTSettings()
