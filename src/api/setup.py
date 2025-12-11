@@ -4,7 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from src.api.v1.setup import init_v1_routers
-from src.core.settings import get_redis_settings, get_jwt_settings
+from src.core.settings import get_bot_settings, get_redis_settings, get_jwt_settings
 from src.api.v1.dependencies import init_dependencies
 from src.core.settings import (
     DatabaseSettings,
@@ -29,7 +29,7 @@ def init_app(
     )
     v1_root_router = init_v1_routers()
     app.include_router(v1_root_router)
-    init_dependencies(app, db_settings, get_jwt_settings(), get_redis_settings())
+    init_dependencies(app, db_settings, get_jwt_settings(), get_redis_settings(), get_bot_settings())
 
     return app
 
