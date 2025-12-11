@@ -44,7 +44,8 @@ services:
   nginx: 
       image: nginx:latest 
       container_name: nginx 
-      ports: 
+      ports:
+        - "127.0.0.1:80:80" 
         - "80:80" 
         - "443:443" 
       volumes: 
@@ -118,6 +119,9 @@ services:
       - backend-service
     volumes:
       - cloudpub-config:/home/cloudpub
+    
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
