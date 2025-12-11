@@ -1,5 +1,5 @@
 from typing import Annotated, Any
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends
 from aiogram.types import Update
 from aiogram import Bot, Dispatcher
 
