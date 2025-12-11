@@ -13,7 +13,7 @@ update_router = APIRouter(tags=["webhook"])
 @update_router.post("/webhook")
 async def handle_update(
     update : Any,
-    bot : Annotated[Bot, Stub(Bot)]
+    #bot : Annotated[Bot, Stub(Bot)]
     ):
     #await bot.feed_update(bot, update)
     return {"ok": True}
