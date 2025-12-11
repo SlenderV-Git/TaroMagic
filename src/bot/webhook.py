@@ -1,6 +1,6 @@
 import logging
-from typing import Annotated, Any
-from fastapi import APIRouter, Depends
+from typing import Annotated
+from fastapi import APIRouter, Depends, Request
 from aiogram.types import Update
 from aiogram import Bot, Dispatcher
 
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 @update_router.post("/webhook")
 async def handle_update(
-    request : Any,
+    request : Request,
     bot : Annotated[Bot, Depends(Stub(Bot))],
     dp : Annotated[Dispatcher, Depends(get_root_dispather)]
     ):
