@@ -10,7 +10,7 @@ class ServicesGateway(BaseGateway):
         self._database = database
         super().__init__(database)
 
-    def name(self) -> UserService:
+    def user(self) -> UserService:
         return UserService(repository=self._database.user())
     
     #def name(self) -> NameService:
