@@ -16,3 +16,4 @@ async def handle_update(
     bot : Annotated[Bot, Depends(Stub(Bot))],
     ):
     await bot.feed_update(bot, update)
+    return {"ok": True}
