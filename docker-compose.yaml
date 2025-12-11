@@ -105,7 +105,15 @@ services:
     tty: true
     stdin_open: true
     networks:
-      app-network:
+      app-network
+    
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: always
+    command: tunnel --no-autoupdate --url http://nginx:80
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
