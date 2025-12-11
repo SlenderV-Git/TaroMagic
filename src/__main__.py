@@ -20,9 +20,9 @@ def main() -> None:
     db_settings = get_db_settings()
     doc_settings = get_documentation_settings()
     
-    app = init_app(db_settings, doc_settings)
+    app = init_app(db_settings, doc_settings, lifespan=lifespan)
     
-    start_app(app, lifespan=lifespan)
+    start_app(app)
 
 
 if __name__ == "__main__":

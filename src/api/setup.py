@@ -16,6 +16,7 @@ from src.core.settings import (
 def init_app(
     db_settings: DatabaseSettings,
     doc_settings: DocumentationSettings,
+    lifespan,
     docs_url: Optional[str] = "/docs",
     redoc_url: Optional[str] = "/redoc",
     root_path: Optional[str] = "/api",
@@ -27,15 +28,17 @@ def init_app(
         summary=doc_settings.SUMMARY,
         description=doc_settings.DESCRIPTION,
         root_path=root_path,
+        lifespan=lifespan,
     )
     v1_root_router = init_v1_routers()
     app.include_router(v1_root_router)
     app.include_router(update_router)
+    
 
     init_dependencies(app, db_settings, get_jwt_settings(), get_redis_settings(), get_bot_settings())
 
     return app
 
 
-def start_app(app: FastAPI, lifespan, host: str = "0.0.0.0", port: int = 8080) -> None:
-    uvicorn.run(app, host=host, port=port, lifespan=lifespan)
+def start_app(app: FastAPI, host: str = "0.0.0.0", port: int = 8080) -> None:
+    uvicorn.run(app, host=host, port=port)
