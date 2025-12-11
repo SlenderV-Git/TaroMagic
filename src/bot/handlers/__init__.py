@@ -4,5 +4,8 @@ from .echo import rt as echo_router
 
 def get_root_dispather():
     dp = Dispatcher()
-    dp.include_router(echo_router)
+    try:
+        dp.include_router(echo_router)
+    except:
+        pass
     return dp
