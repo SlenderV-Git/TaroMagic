@@ -30,8 +30,8 @@ def init_app(
     )
     v1_root_router = init_v1_routers()
     app.include_router(v1_root_router)
-    app.include_router(update_router)
-    
+    #app.include_router(update_router)
+
     init_dependencies(app, db_settings, get_jwt_settings(), get_redis_settings(), get_bot_settings())
 
     return app
