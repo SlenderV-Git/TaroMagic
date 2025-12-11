@@ -121,6 +121,8 @@ services:
 
 volumes:
   postgres_data:
+  cloudpub-config:
+
 
 networks:
   app-network:
