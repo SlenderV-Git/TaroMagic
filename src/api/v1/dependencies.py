@@ -51,7 +51,6 @@ def init_dependencies(
     )
 
     bot = Bot(bot_settings.TOKEN)
-    asyncio.run(bot.set_webhook(bot_settings.WEBHOOK))
     
     mediator = CommandMediator()
     mediator.setup(
