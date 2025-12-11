@@ -12,9 +12,8 @@ def main() -> None:
     
     app = init_app(db_settings, doc_settings)
     
-    
-
     start_app(app)
+    #asyncio.run(bot.set_webhook(bot_settings.WEBHOOK))
 
 
 if __name__ == "__main__":
