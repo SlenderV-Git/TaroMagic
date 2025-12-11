@@ -1,7 +1,8 @@
 from typing import Literal, Optional
-from aiogram import Dispatcher, Bot
+from aiogram import Bot
 from fastapi import FastAPI
 from fakeredis.aioredis import FakeRedis
+import asyncio
 
 from src.cache.core.client import RedisClient
 from src.services.security.jwt_token import TokenJWT
@@ -22,6 +23,10 @@ from src.common.tools import singleton
 
 
 APP_STATUS = Literal["test", "production"]
+
+
+async def set_webhook(bot : Bot, settings : BotSettings):
+    await bot.set_webhook(settings.WEBHOOK)
 
 
 def init_dependencies(
@@ -50,6 +55,8 @@ def init_dependencies(
     )
 
     bot = Bot(bot_settings.TOKEN)
+    
+    asyncio.run(set_webhook(bot, bot_settings))
 
     mediator = CommandMediator()
     mediator.setup(
