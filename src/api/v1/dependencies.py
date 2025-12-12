@@ -66,7 +66,7 @@ def init_dependencies(
         
     )
 
-    app.dependency_overrides[Dispatcher] = singleton(bot)
+    app.dependency_overrides[Dispatcher] = singleton(dp)
     app.dependency_overrides[Bot] = singleton(bot)
     app.dependency_overrides[MinioPhotoRepository] = singleton(minio_repo)
     app.dependency_overrides[CommandMediator] = singleton(mediator)
