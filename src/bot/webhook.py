@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 async def handle_update(
     request : Request,
     bot : Annotated[Bot, Depends(Stub(Bot))],
-    dp : Annotated[Dispatcher, Depends(get_root_dispather)]
+    dp : Annotated[Dispatcher, Depends(Stub(Dispatcher))]
     ):
     logger.critical(str(request))
     update = Update.model_validate(

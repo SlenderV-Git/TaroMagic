@@ -1,6 +1,6 @@
 import asyncio
 from typing import Literal, Optional
-from aiogram import Bot
+from aiogram import Bot, Dispatcher
 from fastapi import FastAPI
 from fakeredis.aioredis import FakeRedis
 
@@ -51,6 +51,7 @@ def init_dependencies(
     )
 
     bot = Bot(bot_settings.TOKEN)
+    dp = Dispatcher()
     
     mediator = CommandMediator()
     mediator.setup(
@@ -65,6 +66,7 @@ def init_dependencies(
         
     )
 
+    app.dependency_overrides[Dispatcher] = singleton(bot)
     app.dependency_overrides[Bot] = singleton(bot)
     app.dependency_overrides[MinioPhotoRepository] = singleton(minio_repo)
     app.dependency_overrides[CommandMediator] = singleton(mediator)

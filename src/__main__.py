@@ -1,7 +1,8 @@
 from contextlib import asynccontextmanager
 
-from aiogram import Bot
+from aiogram import Bot, Dispatcher
 from fastapi import FastAPI
+from bot.handlers import get_root_router
 from src.api.setup import init_app, start_app
 from src.core.settings import (
     get_bot_settings,
@@ -21,6 +22,8 @@ def main() -> None:
     doc_settings = get_documentation_settings()
     
     app = init_app(db_settings, doc_settings, lifespan=lifespan)
+    dp : Dispatcher = app.dependency_overrides[Dispatcher]()
+    dp.include_router(get_root_router())
     
     start_app(app)
 

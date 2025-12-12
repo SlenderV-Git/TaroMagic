@@ -1,11 +1,8 @@
-from aiogram import Dispatcher
+from aiogram import Router
 from .echo import rt as echo_router
 
 
-def get_root_dispather():
-    dp = Dispatcher()
-    try:
-        dp.include_router(echo_router)
-    except:
-        pass
-    return dp
+def get_root_router():
+    rt = Router()
+    rt.include_router(echo_router)
+    return rt
