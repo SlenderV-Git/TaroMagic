@@ -21,6 +21,14 @@ from .account import (
     BuyProductQuery,
     BuyInfo,
 )
+from .product import (
+    ProductSchema,
+    CreateProductQuery,
+    UpdateProductQuery,
+    DeleteProductQuery,
+    GetAllProductsQuery,
+    GetProductQuery,
+)
 
 __all__ = (
     Token,
@@ -42,5 +50,11 @@ __all__ = (
     AccountReplenishmentQuery,
     BuyProductQuery,
     AccountCreateQuery,
-    BuyInfo
+    BuyInfo,
+    ProductSchema,
+    CreateProductQuery,
+    UpdateProductQuery,
+    DeleteProductQuery,
+    GetAllProductsQuery,
+    GetProductQuery
 )

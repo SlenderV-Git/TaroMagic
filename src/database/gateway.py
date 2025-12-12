@@ -1,6 +1,7 @@
 from typing import Type
 from src.database.repositories.account import AccountRepository
 from src.database.repositories.user import UserRepository
+from src.database.repositories.product import ProductRepository
 from src.common.interfaces.gateway import BaseGateway
 from src.common.types import RepositoryType
 from src.database.core.manager import TransactionManager
@@ -17,6 +18,9 @@ class DBGateway(BaseGateway):
     
     def account(self):
         return self._init_repo(AccountRepository)
+    
+    def product(self):
+        return self._init_repo(ProductRepository)
 
 
     '''def account(self):
