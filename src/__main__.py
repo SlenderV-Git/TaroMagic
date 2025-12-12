@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from aiogram import Bot, Dispatcher
 from fastapi import FastAPI
-from bot.handlers import get_root_router
+from src.bot.handlers import get_root_router
 from src.api.setup import init_app, start_app
 from src.core.settings import (
     get_bot_settings,
