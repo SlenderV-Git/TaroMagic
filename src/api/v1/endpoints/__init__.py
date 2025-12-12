@@ -1,10 +1,14 @@
 from .healthcheck import healthcheck_router
 from .auth import auth_router
 from .user import user_router
+from .product import product_router
+from .account import account_router
 
 
 __all__ = (
     auth_router,
     healthcheck_router,
-    user_router
+    user_router,
+    account_router,
+    product_router
 )

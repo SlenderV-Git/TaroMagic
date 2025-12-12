@@ -4,7 +4,6 @@ from typing import (
     Callable,
     Mapping,
     Protocol,
-    Sequence,
     Type,
     Union,
     get_args,
@@ -13,11 +12,42 @@ from typing import (
     get_type_hints,
     overload,
 )
+from src.api.v1.handlers.command import (
+    UserSelectCommand,
+    UserCreateCommand,
+    UserUpdateCommand,
+    GetAccountBalanceCommand,
+    DeleteAccountCommand,
+    AccountCreateCommand,
+    AccountReplenishmentCommand,
+    ProductCreateCommand,
+    GetProductCommand,
+    ProductDeleteCommand,
+    GetAllProductsCommand,
+    UpdateProductCommand,
+    BuyProductCommand,
+)
 
-from src.api.v1.handlers.command.user.create import UserCreateCommand
-from src.api.v1.handlers.command.user.select import UserSelectCommand
-from src.api.v1.handlers.command.user.update import UserUpdateCommand
-from src.common.dto.user import SelectUserQuery, UpdateUserQuery, User, UserSchema
+from src.common.dto import UserSchema
+from src.common.dto.user import SelectUserQuery, User, UpdateUserQuery
+from src.common.dto.account import (
+    Account,
+    Balance,
+    DeleteAccountQuery,
+    AccountBalanceQuery,
+    AccountCreateQuery,
+    AccountReplenishmentQuery,
+    BuyProductQuery,
+)
+
+from src.common.dto.product import (
+    GetAllProductsQuery,
+    GetProductQuery,
+    UpdateProductQuery,
+    DeleteProductQuery,
+    CreateProductQuery,
+    Product,
+)
 from src.common.interfaces.hasher import AbstractHasher
 from src.api.v1.handlers.command.base import QT, RT, Command, CommandProtocol
 from .proxy import AwaitableProxy, CommandType
@@ -42,6 +72,68 @@ class CommandMediatorProtocol(Protocol):
         self, query: UpdateUserQuery, *, hasher: AbstractHasher
     ) -> AwaitableProxy[UserUpdateCommand, User]:
         ...
+
+    @overload
+    def send(
+        self, query: AccountBalanceQuery
+    ) -> AwaitableProxy[GetAccountBalanceCommand, Balance]:
+        ...
+
+    @overload
+    def send(
+        self, query: AccountCreateQuery
+    ) -> AwaitableProxy[AccountCreateCommand, Account]:
+        ...
+
+    @overload
+    def send(
+        self, query: AccountReplenishmentQuery
+    ) -> AwaitableProxy[AccountReplenishmentCommand, Account]:
+        ...
+
+    @overload
+    def send(
+        self, query: DeleteAccountQuery
+    ) -> AwaitableProxy[DeleteAccountCommand, Account]:
+        ...
+    
+    @overload
+    def send(
+        self, query: CreateProductQuery
+    ) -> AwaitableProxy[ProductCreateCommand, Product]:
+        ...
+
+    @overload
+    def send(
+        self, query: GetProductQuery
+    ) -> AwaitableProxy[GetProductCommand, Product]:
+        ...
+
+    @overload
+    def send(
+        self, query: GetAllProductsQuery
+    ) -> AwaitableProxy[GetAllProductsCommand, Product]:
+        ...
+
+    @overload
+    def send(
+        self, query: DeleteProductQuery
+    ) -> AwaitableProxy[ProductDeleteCommand, Product]:
+        ...
+
+    
+    @overload
+    def send(
+        self, query: BuyProductQuery
+    ) -> AwaitableProxy[BuyProductCommand, Account]:
+        ...
+
+    @overload
+    def send(
+        self, query: UpdateProductQuery
+    ) -> AwaitableProxy[UpdateProductCommand, Product]:
+        ...
+
 
     #@overload
     #def send(
