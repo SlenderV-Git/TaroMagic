@@ -1,4 +1,5 @@
 from typing import Type
+from src.database.repositories.account import AccountRepository
 from src.database.repositories.user import UserRepository
 from src.common.interfaces.gateway import BaseGateway
 from src.common.types import RepositoryType
@@ -13,6 +14,10 @@ class DBGateway(BaseGateway):
     
     def user(self):
         return self._init_repo(UserRepository)
+    
+    def account(self):
+        return self._init_repo(AccountRepository)
+
 
     '''def account(self):
         return self._init_repo(AccountRepository)'''
