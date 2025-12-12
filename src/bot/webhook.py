@@ -16,9 +16,9 @@ async def handle_update(
     request : Request,
     bot : Annotated[Bot, Depends(Stub(Bot))],
     dp : Annotated[Dispatcher, Depends(Stub(Dispatcher))],
-    x_telegram_bot_api_secret : Annotated[str | None, Header()] = None
+    x_telegram_bot_api_secret_token : Annotated[str | None, Header()] = None
     ):
-    if get_bot_settings().SECRET == x_telegram_bot_api_secret:
+    if get_bot_settings().SECRET == x_telegram_bot_api_secret_token:
         update = Update.model_validate(
             await request.json(),
             context={"bot":bot}
