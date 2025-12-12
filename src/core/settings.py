@@ -20,6 +20,7 @@ class BotSettings(BaseSettings):
     )
     TOKEN : str
     WEBHOOK : str
+    SECRET : str
 
 
 class DatabaseSettings(BaseSettings):

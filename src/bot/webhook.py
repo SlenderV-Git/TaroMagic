@@ -1,9 +1,10 @@
 import logging
 from typing import Annotated
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, HTTPException, Header, Request
 from aiogram.types import Update
 from aiogram import Bot, Dispatcher
 
+from core.settings import get_bot_settings
 from src.api.common.providers.stub import Stub
 
 
@@ -14,12 +15,15 @@ logger = logging.getLogger(__name__)
 async def handle_update(
     request : Request,
     bot : Annotated[Bot, Depends(Stub(Bot))],
-    dp : Annotated[Dispatcher, Depends(Stub(Dispatcher))]
+    dp : Annotated[Dispatcher, Depends(Stub(Dispatcher))],
+    x_telegram_bot_api_secret : Annotated[str | None, Header()] = None
     ):
-    logger.critical(str(request))
-    update = Update.model_validate(
-        await request.json(),
-        context={"bot":bot}
-    )
-    await dp.feed_update(bot, update)
-    return {"ok": True}
+    if get_bot_settings().SECRET == x_telegram_bot_api_secret:
+        update = Update.model_validate(
+            await request.json(),
+            context={"bot":bot}
+        )
+        await dp.feed_update(bot, update)
+        return {"ok": True}
+    else:
+        raise HTTPException(status_code=403)

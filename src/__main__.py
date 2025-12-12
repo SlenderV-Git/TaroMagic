@@ -12,8 +12,13 @@ from src.core.settings import (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    settings = get_bot_settings()
     bot : Bot = app.dependency_overrides[Bot]()
-    await bot.set_webhook(url=get_bot_settings().WEBHOOK, drop_pending_updates=True)
+    await bot.set_webhook(
+        url=settings.WEBHOOK, 
+        drop_pending_updates=True,
+        secret_token=settings.SECRET
+        )
     yield
     await bot.delete_webhook()
 
