@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Header, Request
 from aiogram.types import Update
 from aiogram import Bot, Dispatcher
 
-from core.settings import get_bot_settings
+from src.core.settings import get_bot_settings
 from src.api.common.providers.stub import Stub
 
 
