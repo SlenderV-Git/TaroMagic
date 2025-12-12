@@ -10,7 +10,7 @@ from src.api.common.providers.stub import Stub
 update_router = APIRouter(tags=["webhook"])
 logger = logging.getLogger(__name__)
 
-@update_router.post("/webhook")
+@update_router.post("/webhook/")
 async def handle_update(
     request : Request,
     bot : Annotated[Bot, Depends(Stub(Bot))],
